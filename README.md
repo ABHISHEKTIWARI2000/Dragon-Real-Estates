@@ -109,7 +109,7 @@ The target is `MEDV`, the median value of owner-occupied homes. The model uses t
 |---|---|
 | **Jupyter Notebook** | Interactive experimentation and documented training workflow |
 | **Python** | Model development and inference environment |
-| **Git** *(recommended)* | Versioning notebooks, data changes, and model experiments |
+| **Git** | Versioning notebooks, data changes, and model experiments |
 
 ### Data-science skills demonstrated
 
