@@ -3,11 +3,20 @@ from pathlib import Path
 import joblib
 import numpy as np
 from flask import Flask, jsonify, render_template_string, request
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 app = Flask(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = BASE_DIR / "Dragon_real_estates.joblib"
+
+# Match the preprocessing used during model training in the notebook
+preprocessing_pipeline = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("std_scaler", StandardScaler()),
+])
 
 # Load trained model from the project root so it works in local runs and deployment
 model = joblib.load(MODEL_PATH)
@@ -164,7 +173,9 @@ def predict():
     if features_array.shape[1] != 13:
         return jsonify({"error": "Expected exactly 13 numeric features."}), 400
 
-    prediction = model.predict(features_array)
+    # Match the notebook: preprocess new input with the same imputer and scaler
+    prepared_features = preprocessing_pipeline.transform(features_array)
+    prediction = model.predict(prepared_features)
     return jsonify({"prediction": float(prediction[0])})
 
 
