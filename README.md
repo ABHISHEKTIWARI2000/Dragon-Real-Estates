@@ -31,11 +31,11 @@
 
 | | |
 |---|---|
-| **Problem** | Estimate a property's median value (`MEDV`) from local and structural indicators. |
+| **Problem** | Estimate a property's median value (`MEDV`, in $1,000s) from local and structural indicators. |
 | **Data** | 506 observations · 13 input features · 1 regression target |
 | **Selected model** | `RandomForestRegressor` |
 | **Validation** | 10-fold cross-validation and a stratified 20% hold-out test set |
-| **Final test RMSE** | **2.95** |
+| **Final test RMSE** | **2.95** (about **$2,950** in dataset units) |
 | **Reusable artefact** | `Dragon_real_estates.joblib` |
 
 ## 🎯 Why build this model?
@@ -81,7 +81,7 @@ The decision tree's perfect training score is a warning sign of overfitting. Ran
 
 ## 🗂️ Dataset & features
 
-The target is `MEDV`, the median value of owner-occupied homes. The model uses the remaining 13 numeric fields:
+The target is `MEDV`, the median value of owner-occupied homes, measured in **$1,000s**. The model uses the remaining 13 numeric fields:
 
 | Feature | Meaning |
 |---|---|
@@ -89,7 +89,9 @@ The target is `MEDV`, the median value of owner-occupied homes. The model uses t
 | `CHAS` | Whether the tract borders the Charles River |
 | `NOX`, `RM`, `AGE` | Nitric-oxide concentration, average rooms, and age of owner-occupied units |
 | `DIS`, `RAD`, `TAX` | Distance to employment centres, highway-access index, and property-tax rate |
-| `PTRATIO`, `B`, `LSTAT` | Pupil–teacher ratio, demographic field supplied by the dataset, and lower-status population percentage |
+| `PTRATIO`, `B`, `LSTAT` | Pupil–teacher ratio, a legacy demographic field, and lower-status population percentage |
+
+> **Data note:** The included data follows the historical Boston Housing dataset format. Its `B` and `LSTAT` fields reflect outdated social terminology and may embed harmful historical assumptions. They are retained here only to reproduce the learning dataset; do not use sensitive or demographic proxies in a real-world property-valuation system.
 
 ## 🧰 Libraries, tools & skills used
 
@@ -109,7 +111,7 @@ The target is `MEDV`, the median value of owner-occupied homes. The model uses t
 |---|---|
 | **Jupyter Notebook** | Interactive experimentation and documented training workflow |
 | **Python** | Model development and inference environment |
-| **Git** | Versioning notebooks, data changes, and model experiments |
+| **Git** *(optional)* | Recommended for versioning notebooks, data changes, and model experiments |
 
 ### Data-science skills demonstrated
 
@@ -151,6 +153,8 @@ predictions = model.predict(prepared_features)
 ```
 
 Use the same preprocessing learned in the notebook before passing new feature rows to this model. Each row must contain the 13 predictor columns in the training-data order and must not include `MEDV`.
+
+> **Deployment note:** The current `.joblib` file contains the fitted Random Forest estimator, while the imputation and scaling steps are created separately in the notebook. For a production application, save one combined scikit-learn pipeline so preprocessing and prediction always stay in sync.
 
 ## 🌱 Benefits & practical uses
 
