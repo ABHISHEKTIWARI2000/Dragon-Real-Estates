@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/OPEN%20LIVE%20DEMO-dragon--real--estates.vercel.app-16A34A?style=for-the-badge&logo=vercel&logoColor=white&labelColor=111827" alt="Open Dragon Real Estates live demo">
 </a>
 
-**[dragon-real-estates.vercel.app](https://dragon-real-estates.vercel.app/)**  
+**[dragon-real-estates.vercel.app]**  
 *Enter property details · Get an instant predicted value · Powered by Random Forest*
 
 </div>
