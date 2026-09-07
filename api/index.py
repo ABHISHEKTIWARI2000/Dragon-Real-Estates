@@ -4,6 +4,7 @@ import joblib
 import numpy as np
 from flask import Flask, jsonify, render_template_string, request
 from sklearn.impute import SimpleImputer
+from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -11,14 +12,20 @@ app = Flask(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = BASE_DIR / "Dragon_real_estates.joblib"
+DATA_PATH = BASE_DIR / "data.csv"
 
-# Match the preprocessing used during model training in the notebook
+# Recreate the preprocessing fitted to the same stratified training data used in
+# the notebook before the Random Forest was saved.
+training_data = np.genfromtxt(DATA_PATH, delimiter=",", skip_header=1)
+splitter = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+train_indices, _ = next(splitter.split(training_data, training_data[:, 3]))
 preprocessing_pipeline = Pipeline([
     ("imputer", SimpleImputer(strategy="median")),
     ("std_scaler", StandardScaler()),
 ])
+preprocessing_pipeline.fit(training_data[train_indices, :13])
 
-# Load trained model from the project root so it works in local runs and deployment
+# Load the Random Forest trained on the pipeline's transformed features.
 model = joblib.load(MODEL_PATH)
 
 HTML_FORM = """
@@ -128,7 +135,7 @@ HTML_FORM = """
       resultBox.textContent = 'Predicting...';
 
       try {
-        const response = await fetch('/api/predict', {
+        const response = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ features })
@@ -152,13 +159,20 @@ HTML_FORM = """
 """
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def home():
+    if request.method == "POST":
+        return make_prediction()
+
     return render_template_string(HTML_FORM)
 
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
+    return make_prediction()
+
+
+def make_prediction():
     data = request.get_json(silent=True) or {}
     features = data.get("features")
 
