@@ -1,191 +1,212 @@
 # 🐉 Dragon Real Estates
 
-> **A machine-learning price estimator for residential properties.**  
-> Turn neighbourhood and property characteristics into an estimated median home value.
+> A deployed machine-learning web app that estimates Boston-area home values from 13 neighbourhood and property indicators.
+
+<div align="center">
+
+## 🚀 Try the live application
+
+<a href="https://dragon-real-estates.vercel.app/">
+  <img src="https://img.shields.io/badge/OPEN%20LIVE%20DEMO-dragon--real--estates.vercel.app-16A34A?style=for-the-badge&logo=vercel&logoColor=white&labelColor=111827" alt="Open Dragon Real Estates live demo">
+</a>
+
+**[dragon-real-estates.vercel.app](https://dragon-real-estates.vercel.app/)**  
+*Enter property details · Get an instant predicted value · Powered by Random Forest*
+
+</div>
 
 <p align="center">
+  <a href="https://dragon-real-estates.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Visit%20App-16A34A?style=for-the-badge&logo=vercel&logoColor=white" alt="Open the live Dragon Real Estates app"></a>
   <img src="https://img.shields.io/badge/Task-Regression-7C3AED?style=for-the-badge" alt="Regression task">
   <img src="https://img.shields.io/badge/Model-Random%20Forest-16A34A?style=for-the-badge" alt="Random Forest model">
-  <img src="https://img.shields.io/badge/Evaluation-RMSE-F59E0B?style=for-the-badge" alt="RMSE evaluation">
-  <img src="https://img.shields.io/badge/Environment-Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter">
+  <img src="https://img.shields.io/badge/Deployment-Vercel-000000?style=for-the-badge&logo=vercel" alt="Deployed on Vercel">
 </p>
 
 <p align="center">
   <strong>Libraries, tools &amp; skills used</strong><br><br>
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="pandas">
-  <img src="https://img.shields.io/badge/NumPy-4DABCF?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy">
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
   <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn">
-  <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge" alt="Matplotlib">
+  <img src="https://img.shields.io/badge/NumPy-4DABCF?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy">
+  <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter">
   <img src="https://img.shields.io/badge/Joblib-4B8BBE?style=for-the-badge" alt="Joblib">
   <br>
-  <img src="https://img.shields.io/badge/Data%20Analysis-0EA5E9?style=flat-square" alt="Data analysis skill">
-  <img src="https://img.shields.io/badge/Feature%20Engineering-8B5CF6?style=flat-square" alt="Feature engineering skill">
-  <img src="https://img.shields.io/badge/Model%20Validation-16A34A?style=flat-square" alt="Model validation skill">
-  <img src="https://img.shields.io/badge/Regression-F59E0B?style=flat-square" alt="Regression skill">
+  <img src="https://img.shields.io/badge/Data%20Analysis-0EA5E9?style=flat-square" alt="Data analysis">
+  <img src="https://img.shields.io/badge/Feature%20Preprocessing-8B5CF6?style=flat-square" alt="Feature preprocessing">
+  <img src="https://img.shields.io/badge/Model%20Validation-16A34A?style=flat-square" alt="Model validation">
+  <img src="https://img.shields.io/badge/API%20Deployment-F59E0B?style=flat-square" alt="API deployment">
 </p>
 
 ---
 
-## ✨ At a glance
+## ✨ Live application
 
-| | |
+**[Open Dragon Real Estates →](https://dragon-real-estates.vercel.app/)**
+
+The deployed app provides a responsive form for all 13 model inputs. Submit the form to receive an estimated `MEDV` value without retraining the model. The live service is hosted on **Vercel** and powered by a Flask serverless function.
+
+| Capability | Implementation |
 |---|---|
-| **Problem** | Estimate a property's median value (`MEDV`, in $1,000s) from local and structural indicators. |
-| **Data** | 506 observations · 13 input features · 1 regression target |
-| **Selected model** | `RandomForestRegressor` |
-| **Validation** | 10-fold cross-validation and a stratified 20% hold-out test set |
-| **Final test RMSE** | **2.95** (about **$2,950** in dataset units) |
-| **Reusable artefact** | `Dragon_real_estates.joblib` |
+| Browser experience | HTML form with labelled numeric fields and inline prediction/error feedback |
+| Prediction endpoint | `POST /api/predict` |
+| Input validation | Requires exactly 13 numeric feature values |
+| Model inference | Median imputation → standard scaling → Random Forest prediction |
+| Deployment | `vercel.json` routes incoming requests to `api/index.py` |
 
-## 🎯 Why build this model?
+## 🎯 Problem statement
 
-Property valuation depends on many signals at once—such as room count, crime rate, tax rate, access to highways, and neighbourhood conditions. Estimating value manually can be slow and inconsistent. This project explores how supervised machine learning can learn the relationship between those signals and home value, providing a fast, repeatable estimate to support analysis and decision-making.
+Property value is affected by many interacting factors—room count, local taxes, crime rate, air quality, and access to employment, among others. Manual valuation is time-consuming and can be inconsistent. This project uses supervised regression to learn from historical housing data and return a quick, repeatable estimate of a home's median value.
 
-> **Important:** This is a learning/project model built from the included dataset. It is not a substitute for a licensed appraisal or a production valuation system.
+> **Scope:** This is an educational model based on historical Boston Housing data. It is not an appraisal tool and must not be used for lending, pricing, or other real-world decisions about people or property.
 
-## 🧭 How it works
+## 🧭 End-to-end workflow
 
 ```mermaid
 flowchart LR
-    A[Housing data] --> B[Explore & inspect]
-    B --> C[Stratified train/test split<br/>on CHAS]
+    A[Historical housing data] --> B[Explore & inspect]
+    B --> C[Stratified 80/20 split<br/>on CHAS]
     C --> D[Median imputation<br/>+ standard scaling]
     D --> E[Train & compare<br/>regressors]
-    E --> F[10-fold cross-validation]
-    F --> G[Random Forest selected]
-    G --> H[Evaluate on hold-out set]
-    H --> I[Save model with Joblib]
+    E --> F[Select Random Forest]
+    F --> G[Save with Joblib]
+    G --> H[Flask prediction API]
+    H --> I[Vercel web app]
 ```
 
-## 🧠 Modelling strategy
+## 📊 Model results
 
-1. **Explore the data** — inspect distributions, correlations, and feature relationships; the notebook also examines useful attribute combinations.
-2. **Protect the test set** — use `StratifiedShuffleSplit` with `CHAS` so the Charles River indicator keeps a similar 0/1 balance in training and test data.
-3. **Prepare features consistently** — fill missing numeric values with the median and standardize features in a scikit-learn `Pipeline`. The source data has 5 missing `RM` (average rooms) values.
-4. **Compare candidates** — train Linear Regression, Decision Tree Regression, and Random Forest Regression models.
-5. **Validate fairly** — compare models using 10-fold cross-validation with RMSE, then evaluate the selected model on the untouched test set.
-6. **Persist the winner** — serialize the trained Random Forest to a `.joblib` file so it can be loaded without retraining.
+The project compares three regression models using 10-fold cross-validation. Lower RMSE is better.
 
-## 📊 Model comparison
-
-Lower RMSE is better. Cross-validation scores below are the mean across 10 folds.
-
-| Candidate | Train RMSE | Cross-validation RMSE | CV spread |
+| Candidate | Train RMSE | Mean cross-validation RMSE | CV spread |
 |---|---:|---:|---:|
 | Linear Regression | 4.84 | 5.04 | ± 1.06 |
 | Decision Tree Regressor | 0.00 | 4.32 | ± 0.65 |
 | **Random Forest Regressor** | **1.29** | **3.34** | **± 0.72** |
 
-The decision tree's perfect training score is a warning sign of overfitting. Random Forest achieved the best cross-validation result and was selected. Its final evaluation on the held-out test set produced an RMSE of **2.95**.
+The perfect Decision Tree training score signals overfitting. Random Forest had the best validation performance and was selected. The currently saved model produces a **2.98 RMSE** on the reproducible 102-row stratified hold-out set—approximately **$2,980**, since `MEDV` is expressed in $1,000s.
 
-## 🗂️ Dataset & features
+## 🧠 Strategy used
 
-The target is `MEDV`, the median value of owner-occupied homes, measured in **$1,000s**. The model uses the remaining 13 numeric fields:
+1. **Exploration** — inspect distributions, correlations, scatter plots, and useful feature combinations.
+2. **Representative split** — use `StratifiedShuffleSplit` on `CHAS` to preserve its 0/1 distribution across training and test data.
+3. **Data preparation** — impute the five missing `RM` values with the median, then standardize numeric features in a scikit-learn pipeline.
+4. **Model selection** — compare Linear Regression, Decision Tree Regression, and Random Forest Regression.
+5. **Evaluation** — use RMSE, 10-fold cross-validation, and a hold-out test set to check generalization.
+6. **Deployment** — reload the trained `.joblib` model, rebuild the matching preprocessing pipeline from the deterministic training split, and serve predictions through Flask on Vercel.
 
-| Feature | Meaning |
+## 🗂️ Data
+
+The application uses 506 records from the historical **Boston Housing** dataset. It has 13 numerical predictors and the `MEDV` target: median value of owner-occupied homes in **$1,000s**.
+
+| Feature group | Fields |
 |---|---|
-| `CRIM`, `ZN`, `INDUS` | Crime rate, residential-zoning proportion, and non-retail business proportion |
-| `CHAS` | Whether the tract borders the Charles River |
-| `NOX`, `RM`, `AGE` | Nitric-oxide concentration, average rooms, and age of owner-occupied units |
-| `DIS`, `RAD`, `TAX` | Distance to employment centres, highway-access index, and property-tax rate |
-| `PTRATIO`, `B`, `LSTAT` | Pupil–teacher ratio, a legacy demographic field, and lower-status population percentage |
+| Neighbourhood & zoning | `CRIM`, `ZN`, `INDUS`, `CHAS` |
+| Environment & accessibility | `NOX`, `DIS`, `RAD`, `TAX` |
+| Housing characteristics | `RM`, `AGE` |
+| Socioeconomic indicators | `PTRATIO`, `B`, `LSTAT` |
 
-> **Data note:** The included data follows the historical Boston Housing dataset format. Its `B` and `LSTAT` fields reflect outdated social terminology and may embed harmful historical assumptions. They are retained here only to reproduce the learning dataset; do not use sensitive or demographic proxies in a real-world property-valuation system.
+The dataset documentation is included in [`housing.names`](housing.names). `B` and `LSTAT` are legacy fields with outdated terminology and may encode harmful historical assumptions. They are included solely to reproduce this learning dataset and should be removed or carefully reconsidered for any modern model.
 
-## 🧰 Libraries, tools & skills used
+## 🧰 Stack
 
-### Libraries
-
-| Library | Used for |
+| Category | Used technologies |
 |---|---|
-| `pandas` | Loading, inspecting, and manipulating tabular data |
-| `numpy` | Numerical operations and RMSE calculations |
-| `matplotlib` | Histograms and exploratory visualizations |
-| `scikit-learn` | Splitting, preprocessing, pipelines, models, metrics, and cross-validation |
-| `joblib` | Saving the trained model for reuse |
+| Data & numerical work | `pandas`, `numpy` |
+| Visual exploration | `matplotlib`, Jupyter Notebook |
+| Machine learning | `scikit-learn` — `SimpleImputer`, `StandardScaler`, `Pipeline`, `StratifiedShuffleSplit`, cross-validation, and regressors |
+| Model persistence | `joblib` |
+| Web/API | Flask, HTML, CSS, browser Fetch API |
+| Hosting | Vercel serverless Python function |
 
-### Tools
+## 🚀 Run locally
 
-| Tool | Role |
-|---|---|
-| **Jupyter Notebook** | Interactive experimentation and documented training workflow |
-| **Python** | Model development and inference environment |
-| **Git** *(optional)* | Recommended for versioning notebooks, data changes, and model experiments |
+### Prerequisites
 
-### Data-science skills demonstrated
+- Python 3.9 or later
+- `pip`
 
-- Exploratory data analysis: summaries, histograms, correlations, and feature combinations
-- Data quality handling: median imputation for missing values
-- Feature preprocessing: standardization in a reusable pipeline
-- Responsible splitting: stratified train/test partitioning
-- Regression modelling: baseline, tree, and ensemble methods
-- Evaluation: RMSE, 10-fold cross-validation, and overfitting checks
-- Model persistence: export and reload a trained estimator
-
-## 🚀 Run the project
-
-1. Clone or download this project.
-2. Create and activate a Python virtual environment.
-3. Install the dependencies:
+### Setup
 
 ```bash
-pip install pandas numpy matplotlib scikit-learn joblib jupyter
+git clone <your-repository-url>
+cd "Dragon Real Estates"
+python -m venv .venv
 ```
 
-4. Start Jupyter from the project directory:
+Activate the virtual environment, then install the web-app dependencies:
 
 ```bash
-jupyter notebook
+pip install -r requirements.txt
+python api/index.py
 ```
 
-5. Open **`Dragon Real Estates.ipynb`** and run the cells from top to bottom.
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
-## 🔮 Load the saved model
+To reproduce the model exploration, install the notebook packages and open the main notebook:
 
-The saved estimator is available at `Dragon_real_estates.joblib`.
-
-```python
-from joblib import load
-
-model = load("Dragon_real_estates.joblib")
-predictions = model.predict(prepared_features)
+```bash
+pip install pandas matplotlib jupyter
+jupyter notebook "Dragon Real Estates.ipynb"
 ```
 
-Use the same preprocessing learned in the notebook before passing new feature rows to this model. Each row must contain the 13 predictor columns in the training-data order and must not include `MEDV`.
+## 🔌 API usage
 
-> **Deployment note:** The current `.joblib` file contains the fitted Random Forest estimator, while the imputation and scaling steps are created separately in the notebook. For a production application, save one combined scikit-learn pipeline so preprocessing and prediction always stay in sync.
+Send a JSON request containing the 13 features in this exact order:
 
-## 🌱 Benefits & practical uses
+`CRIM, ZN, INDUS, CHAS, NOX, RM, AGE, DIS, RAD, TAX, PTRATIO, B, LSTAT`
 
-| Benefit | What it enables |
-|---|---|
-| **Fast estimates** | Generate value estimates in seconds after the model is loaded. |
-| **Consistent decisions** | Apply the same data-driven approach to every comparable record. |
-| **Non-linear patterns** | Random Forest can capture interactions that a simple linear model may miss. |
-| **Reusable model file** | Integrate the exported artefact into a script, API, dashboard, or web app. |
-| **Learning foundation** | A clear starting point for feature engineering, tuning, monitoring, and deployment. |
+```bash
+curl -X POST https://dragon-real-estates.vercel.app/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"features":[0.00632,18,2.31,0,0.538,6.575,65.2,4.09,1,296,15.3,396.9,4.98]}'
+```
+
+Example response:
+
+```json
+{
+  "prediction": 26.034000000000006
+}
+```
+
+`prediction` is in $1,000s; the example corresponds to approximately **$26,034** in the dataset's units.
+
+## ✅ Verify the API locally
+
+The included smoke test sends the same valid 13-feature request to the Flask application:
+
+```bash
+python _validate_api.py
+```
+
+Expected result: an HTTP `200` response and a JSON prediction.
 
 ## 📁 Project structure
 
 ```text
 .
-├── Dragon Real Estates.ipynb       # Main exploration, training, and evaluation notebook
-├── Model Testing.ipynb             # Additional model experimentation
-├── data.csv                        # Source dataset
-├── housing.data / housing.names    # Dataset files and field definitions
-├── Dragon_real_estates.joblib      # Saved Random Forest model
-└── Output from different Models.txt # Recorded comparison results
+├── api/
+│   └── index.py                       # Flask UI and prediction API
+├── Dragon Real Estates.ipynb          # Exploration, training, and evaluation
+├── Model Testing.ipynb                # Saved-model inference experiment
+├── Dragon_real_estates.joblib         # Trained Random Forest estimator
+├── data.csv                           # App dataset used to recreate preprocessing
+├── housing.data                       # Original-format housing data
+├── housing.names                      # Dataset source and field documentation
+├── Output from different Models.txt   # Cross-validation records
+├── requirements.txt                   # Runtime dependencies
+├── vercel.json                        # Vercel serverless routing configuration
+└── _validate_api.py                   # Local API smoke test
 ```
 
-## ⚠️ Next improvements
+## ⚠️ Limitations & next steps
 
-- Package preprocessing and the estimator into one end-to-end pipeline before deployment.
-- Add hyperparameter tuning and compare it against the current Random Forest baseline.
-- Track feature importance and prediction error across neighbourhood segments.
-- Add automated tests, dependency pinning, and a small prediction API or UI.
-- Retrain with current, location-specific market data before any real-world use.
+- The model is trained on an old, small dataset and does not reflect current property markets.
+- The current model artifact contains the estimator only; the deployed API intentionally recreates matching preprocessing. A future version should save one complete preprocessing-and-model pipeline.
+- Set `random_state` and pin package versions for fully reproducible retraining.
+- Add stronger request validation, API tests, monitoring, and a versioned model-release process.
+- Replace sensitive legacy inputs with ethically appropriate, current, and legally reviewed data before any real-world use.
 
 ---
 
-Built as a practical regression and model-selection project for real-estate price estimation.
+Built as an educational end-to-end machine-learning project: from exploratory analysis to a live Vercel deployment.
