@@ -99,8 +99,8 @@ HTML_FORM = f"""<!doctype html>
     .result-label {{ font-size: 12px; font-weight: 750; text-transform: uppercase; letter-spacing: .1em; }} .result-value {{ margin-top: 3px; font-size: 25px; font-weight: 800; letter-spacing: -.03em; }}
     .result-mark {{ width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--teal); background: #f5fffb; font-size: 20px; }}
     .result.error {{ color: #8c3028; background: #fff0ee; border-color: #f2c6c0; }}
-    @media (max-width: 850px) {{ .shell {{ grid-template-columns: 1fr; margin: 16px auto; }} .rail {{ min-height: 310px; }} .rail-copy {{ margin-top: 62px; }} .trust {{ bottom: 25px; }} .form-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
-    @media (max-width: 520px) {{ .shell {{ width: calc(100% - 20px); border-radius: 20px; }} .rail, .content {{ padding: 25px 20px; }} .rail {{ min-height: 350px; }} .rail-copy {{ margin-top: 68px; }} .trust {{ left: 20px; right: 20px; }} .content-header, .actions, .result {{ align-items: flex-start; flex-direction: column; }} .form-grid {{ grid-template-columns: 1fr; gap: 18px; }} .field-help {{ min-height: 0; }} button {{ width: 100%; }} }}
+    @media (max-width: 850px) {{ .shell {{ grid-template-columns: 1fr; margin: 16px auto; }} .rail {{ min-height: 0; }} .rail-copy {{ margin-top: 62px; }} .trust {{ position: relative; left: auto; right: auto; bottom: auto; margin-top: 48px; }} .form-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+    @media (max-width: 520px) {{ .shell {{ width: calc(100% - 20px); border-radius: 20px; }} .rail, .content {{ padding: 25px 20px; }} .rail-copy {{ margin-top: 68px; }} .trust {{ margin-top: 42px; }} .content-header, .actions, .result {{ align-items: flex-start; flex-direction: column; }} .form-grid {{ grid-template-columns: 1fr; gap: 18px; }} .field-help {{ min-height: 0; }} button {{ width: 100%; }} }}
   </style>
 </head>
 <body>
